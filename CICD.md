@@ -1,4 +1,4 @@
-# ใบงานปฏิบัติการ: การพัฒนาระบบจองห้องพักออนไลน์ด้วย CI/CD บน Vercel และ GitHub
+# ใบงานปฏิบัติการ: การพัฒนาระบบจองห้องพักออนไลน์ด้วย CI/CD บน Railway และ GitHub
 
 ## วัตถุประสงค์
 1. เพื่อเรียนรู้กระบวนการ CI/CD (Continuous Integration/Continuous Deployment)
