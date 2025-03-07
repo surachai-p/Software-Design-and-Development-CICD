@@ -1,4 +1,4 @@
-# ใบงานปฏิบัติการ: การพัฒนาระบบจองห้องพักออนไลน์ด้วย CI/CD บน Railway และ GitHub
+# ใบงานปฏิบัติการ: การพัฒนาระบบจองห้องพักออนไลน์ด้วย CI/CD บน Vercel และ GitHub
 
 ## วัตถุประสงค์
 1. เพื่อเรียนรู้กระบวนการ CI/CD (Continuous Integration/Continuous Deployment)
@@ -494,43 +494,59 @@ git push -u --force origin main
      - `PORT`: 3001
      - `JWT_SECRET`: [สร้าง key ที่ซับซ้อนและปลอดภัย]
      - `ALLOWED_ORIGINS`: https://your-frontend-app.railway.app (ใส่ URL ของ frontend ที่จะ deploy บน Railway ซึ่งต้องมาแก้ไขภายหลัง หลังจากที่ได้โดเมนของ Front-End แล้ว)
-   
-1.  คลิก "Deploy" และรอจนกว่าการ deploy จะเสร็จสิ้น
+    ![New Project](./images/railway-11.png)
+    ![New Project](./images/railway-12.png)
+    ![New Project](./images/railway-13.png)
+    ![New Project](./images/railway-14.png)
+11.  คลิก "Deploy" และรอจนกว่าการ deploy จะเสร็จสิ้น
+12. ในเมนู Settings เลือก Generate Domain เพื่อใช้สำหรับให้ front-end เชื่อมต่อ
+    ![New Project](./images/railway-15.png)
+    ![New Project](./images/railway-16.png)
+13. หลังจาก deploy สำเร็จ ให้คัดลอก URL ของ backend ไว้ (จะมีรูปแบบประมาณ https://booking-app-demo-production.up.railway.app)
 
-2.  หลังจาก deploy สำเร็จ ให้คัดลอก URL ของ backend ไว้ (จะมีรูปแบบประมาณ https://booking-app-demo-production.up.railway.app)
-
-3.  ทดสอบการเชื่อมต่อกับ Back-end ด้วย Postman
+14. ทดสอบการเชื่อมต่อกับ Back-end ด้วย Postman
     
+  ### บันทึกผลการทดลองการเชื่อมต่อด้วย Postman
+  รูปการ Login
+ ![New Project](./images/image.png)
+  รูปการเพิ่มข้อมูลการจอง
+ ![New Project](./images/image.png)
+  รูปการดูข้อมูลการจองทั้งหมด
+ ![New Project](./images/image.png)
+  รูปการดูข้อมูลการจองโดยระบุ ID
+ ![New Project](./images/image.png)
+  รูปการแก้ไขข้อมูลการจอง
+ ![New Project](./images/image.png)
+  รูปการลบข้อมูลการจอง
 
 ### ส่วนที่ 6: การ Deploy Frontend บน Railway
 
 
 1. เลือก "Create"
+  ![Front-end](./images/railway-front1.png)
 2. เลือก Empty Service
+  ![Front-end](./images/railway-front2.png)   
 3. เปลี่ยนชื่อ Service เป็น Backend
-4. 
+4. กำหนด Root Directory เป็น `/frontend`
+  ![Front-end](./images/railway-front3.png)
 
 5. เลือก repository "booking-app-demo" จากรายการ GitHub repositories
+6. ในส่วน "Environment Variables" ให้เพิ่ม:
+     - `VITE_API_URL`: [วาง URL ของ backend ที่ได้จาก ขั้นตอนการกำหนด Back-end]
+7. Generate Front-end โดเมน และทำการคัดลอกโดเมน
+   ![Front-end](./images/railway-front5.png)  
+8. คลิก "Deploy" และรอจนกว่าการ deploy จะเสร็จสิ้น
+  ![Front-end](./images/railway-front4.png)
+9.  เมื่อ deploy เสร็จแล้ว Vercel จะสร้าง URL สำหรับเข้าถึงเว็บแอปพลิเคชัน (เช่น https://frontend-production-dfb9.up.railway.app)
 
-6. ในหน้าการตั้งค่าโปรเจค:
-   - ในส่วน "Framework Preset" ให้เลือก "Vite"
-   - ในส่วน "Root Directory" ให้เลือก `frontend`
-   - ในส่วน "Build and Output Settings" ให้ใช้ค่าเริ่มต้น
-   - ในส่วน "Environment Variables" ให้เพิ่ม:
-     - `VITE_API_URL`: [วาง URL ของ backend ที่ได้จาก Railway]
-
-7. คลิก "Deploy" และรอจนกว่าการ deploy จะเสร็จสิ้น
-
-8. เมื่อ deploy เสร็จแล้ว Vercel จะสร้าง URL สำหรับเข้าถึงเว็บแอปพลิเคชัน (เช่น https://frontend-production-dfb9.up.railway.app)
-
-9. แก้ไข .env ของ backend เพื่ออนุญาตให้เรียกใช้งานมาจาก Front-end ได้
+10. แก้ไข .env ของ backend เพื่ออนุญาตให้เรียกใช้งานมาจาก Front-end ได้
 ```
 PORT=3001
 JWT_SECRET='your-secret-key'
 ALLOWED_ORIGINS=http://localhost:5173,https://frontend-production-dfb9.up.railway.app
 
 ```
-10. แก้ไข server.js ในส่วนที่อนุญาต
+10. แก้ไข server.js ในส่วนที่อนุญาตให้ front-end สามารถเรียกใช้งานได้
 ```js
   const allowedOrigins = [
     'https://frontend-production-dfb9.up.railway.app/login', 
@@ -539,20 +555,20 @@ ALLOWED_ORIGINS=http://localhost:5173,https://frontend-production-dfb9.up.railwa
 ``` 
 11. แก้ไขไฟล์ .env.production
 ```
-VITE_API_URL=hhttps://frontend-production-dfb9.up.railway.app/login
+VITE_API_URL=https://frontend-production-dfb9.up.railway.app/login
 ```
 12. commit และ push ไปยัง GitHub ระบบของ railway จะทำการ Deploy ใหม่โดยอัตโนมัติ
     
 ### ส่วนที่ 7: การทดสอบระบบที่ได้ Deploy
 
 1. ทดสอบการเข้าถึงหน้าเว็บของ frontend:
-   - เปิดเบราว์เซอร์และเข้า URL ของ frontend
+   - เปิดเบราว์เซอร์และเข้า URL ของ frontend (หรือคลิกเลือกจาก Front-end service แล้วคลิก URL ที่แสดงใน Front-end)
    - ตรวจสอบว่าหน้าเว็บแสดงผลถูกต้อง
 
 2. ทดสอบการทำงานของระบบ:
    - ทดสอบการจองห้องพัก
    - ทดสอบการเข้าสู่ระบบ (ล็อกอิน)
-   - ทดสอบการดูรายการจองทั้งหมด (ต้องล็อกอินก่อน)
+   - ทดสอบการดูรายการจองทั้งหมด (ต้องล็อกอินก่อน) (การ Login สามารถพิมพ์ที่ URL ตามด้วย /login)
 
 3. ทดสอบการอัปเดตโค้ดและ CI/CD:
    - แก้ไขโค้ดบนเครื่องของคุณ
